@@ -21,12 +21,15 @@ along with Octave; see the file COPYING.  If not, see
 */
 
 //#if defined (HAVE_CURL)
-#  include <curl/curl.h>
-#  include <curl/curlver.h>
-#  include <curl/easy.h>
+#include <curl/curl.h>
+#include <curl/curlver.h>
+#include <curl/easy.h>
 //#endif
 
 #include <octave/oct.h>
+
+//! Wrapper class for libcurl's easy interface, for the API specification see
+//! https://curl.haxx.se/libcurl/c/libcurl-easy.html.
 
 class libcurl_wrapper {
 private:
@@ -41,12 +44,17 @@ private:
   }
 
 protected:
+
+  //! Ctor.
+
   libcurl_wrapper () : curl(curl_easy_init ()) {
-    std::cout << "libcurl_wrapper: new instance" << std::endl;
+    std::cout << "libcurl_wrapper: new instance" << std::endl; //FIXME remove
   }
 
 public:
+
   //! Static factory method
+
   static libcurl_wrapper create () {
     libcurl_wrapper obj;
     // default error buffer is that of the object itself
@@ -55,7 +63,8 @@ public:
     return obj;
   }
 
-  //! Destructor
+  //! Dtor.
+
   ~libcurl_wrapper() {
     if (curl) {
       curl_easy_cleanup (curl);
