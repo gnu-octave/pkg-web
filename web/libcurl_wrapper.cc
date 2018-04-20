@@ -22,11 +22,8 @@ along with Octave; see the file COPYING.  If not, see
 
 //#if defined (HAVE_CURL)
 #include <curl/curl.h>
-#include <curl/curlver.h>
 #include <curl/easy.h>
 //#endif
-
-#include <octave/oct.h>
 
 //! Wrapper class for libcurl's easy interface, for the API specification see
 //! https://curl.haxx.se/libcurl/c/libcurl-easy.html.
@@ -37,8 +34,9 @@ private:
   char errbuf[CURL_ERROR_SIZE]; //! curl error buffer
 
   //! Throw an Octave error and print message and code from libcurl
+
   void curl_error (CURLcode c) {
-    if(c != CURLE_OK) {
+    if (c != CURLE_OK) {
       error ("libcurl (code = %d): %s\n", c, curl_easy_strerror (c));
     }
   }
@@ -69,7 +67,7 @@ public:
     if (curl) {
       curl_easy_cleanup (curl);
     }
-    std::cout << "libcurl_wrapper: destruct" << std::endl;
+    std::cout << std::endl << "libcurl_wrapper: destruct" << std::endl;
   }
 
   //! Wrapper for curl_easy_perform
@@ -107,15 +105,3 @@ public:
     return "";
   }
 };
-
-DEFUN_DLD (__curl__, args, , "Add A to B")
-{
-  if (args.length () != 1)
-    print_usage ();
-
-  auto a = libcurl_wrapper::create();
-  a.setURL ("http://example.com");
-  a.perform ();
-
-  return octave_value (a.getEFFECTIVE_URL ());
-}

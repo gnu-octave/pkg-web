@@ -1,1 +1,1 @@
-mkoctfile -v libcurl_wrapper.cc
+mkoctfile -v __curl__.cc
